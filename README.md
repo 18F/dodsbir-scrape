@@ -7,13 +7,13 @@ Python module for extracting DoD Small Business Innovation Research (SBIR) topic
 from dodsbirscrape import DODSBIRScrape
 
 #initialize
-i = DODSBIRScrape()
+s = DODSBIRScrape()
 
 #get list of topic numbers from dodsbir.gov
-i.get_topic_list()
+s.get_topic_list()
 
 #see what you grabbed
-print i.topic_ids
+print s.topic_ids
 
 ```
 
@@ -22,11 +22,12 @@ print i.topic_ids
 from dodsbirscrape import DODSBIRScrape
 
 #initialize
-i = DODSBIRScrape()
+s = DODSBIRScrape()
 
 #get a topic based on id
-topic = i.get_topic("SB142-004")
+topic = s.get_topic("SB142-004")
 
 #see what you grabbed
 print topic
+
 ```
