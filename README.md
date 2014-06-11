@@ -24,7 +24,7 @@ from dodsbirscrape import DODSBIRScrape
 #initialize
 s = DODSBIRScrape()
 
-#get a topic based on id
+#get a topic based on topic number
 topic = s.get_topic("SB142-004")
 
 #see what you grabbed
