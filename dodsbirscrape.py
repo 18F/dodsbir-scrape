@@ -66,6 +66,7 @@ class DODSBIRScrape:
 
     def get_topic(self, topic_number):
         """given a topic number, fetch topic page from dodsbir.net"""
+        self.get_topic_list()
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
         req = mechanize.Request(
