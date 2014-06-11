@@ -1,8 +1,12 @@
 from dodsbirscrape import DODSBIRScrape
 
+#initialize
 i = DODSBIRScrape()
+
+#get list of topic numbers from dodsbir.gov
 i.get_topic_list()
 
+#grab one topic and print it
 topic = i.get_topic("MDA14-004")
 
 print "Topic Number: %s\n" % topic.topic_number
@@ -17,4 +21,7 @@ print "Phases: %s\n" % topic.phases
 print "References: %s\n" % topic.references
 print "Keywords: %s\n" % topic.keywords
 
+#get all topics and store them in a list (takes one second per topic)
 i.get_all_topics()
+
+print i.topics

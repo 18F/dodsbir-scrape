@@ -65,9 +65,7 @@ class DODSBIRScrape:
         return topic
 
     def get_topic(self, topic_number):
-        """
-        given a topic number, fetch topic page from dodsbir.net
-        """
+        """given a topic number, fetch topic page from dodsbir.net"""
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
         req = mechanize.Request(
@@ -77,8 +75,9 @@ class DODSBIRScrape:
         return self.html_to_topic(resp.read(), topic_id)
 
     def get_all_topics(self):
+        """loop through each topic id and scrape topic from dodsbir.net"""
         for key, value in self.topic_ids.iteritems():
             self.topic_list = []
             topic = self.get_topic(key)
-            self.topic_list.append(topic)
+            self.topics.append(topic)
             time.sleep(1)
