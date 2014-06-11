@@ -16,3 +16,17 @@ i.get_topic_list()
 print i.topic_ids
 
 ```
+
+#### Get topic from topic number
+```python
+from dodsbirscrape import DODSBIRScrape
+
+#initialize
+i = DODSBIRScrape()
+
+#get a topic based on id
+topic = i.get_topic("SB142-004")
+
+#see what you grabbed
+print topic
+```
