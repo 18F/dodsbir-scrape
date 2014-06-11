@@ -3,7 +3,7 @@ Python module for extracting DoD Small Business Innovation Research (SBIR) topic
 ## Examples
 
 #### Get list of topic numbers
-```
+```python
 from dodsbirscrape import DODSBIRScrape
 
 #initialize
