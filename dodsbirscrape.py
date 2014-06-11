@@ -75,7 +75,7 @@ class DODSBIRScrape:
         return self.html_to_topic(resp.read(), topic_id)
 
     def get_all_topics(self):
-        """loop through each topic id and scrape topic from dodsbir.net"""
+        """loop through each topic id in topic_ids and scrape topic from dodsbir.net"""
         for key, value in self.topic_ids.iteritems():
             self.topic_list = []
             topic = self.get_topic(key)
