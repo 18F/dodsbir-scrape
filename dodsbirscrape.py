@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import mechanize
 import re
 import time
 import urllib
@@ -20,9 +19,8 @@ class DODSBIRScrape:
 
     def get_topic_list(self):
         """go to topic_list_url and extract list of topics"""
-        browser = mechanize.Browser()
-        browser.open("%s" % self.topic_list_url)
-        soup = BeautifulSoup(browser.response().read())
+        f = urllib.urlopen("%s" % self.topic_list_url)
+        soup = BeautifulSoup(f)
         self.topic_ids = {}
         options = soup.find_all('select')[0].find_all('option')
         for option in options:
@@ -77,12 +75,12 @@ class DODSBIRScrape:
         self.get_topic_list()
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
-        req = mechanize.Request(URL_RESULTS_FORM, urllib.urlencode(data))
-        resp = mechanize.urlopen(req)
-        return self.html_to_topic(resp.read(), topic_id)
+        f = urllib.urlopen(URL_RESULTS_FORM, urllib.urlencode(data))
+        return self.html_to_topic(f, topic_id)
 
     def get_all_topics(self):
-        """loop through each topic id in topic_ids and scrape topic from dodsbir.net"""
+        """loop through each topic id in topic_ids and scrape topic from 
+        dodsbir.net"""
         for key, value in self.topic_ids.iteritems():
             self.topic_list = []
             topic = self.get_topic(key)
