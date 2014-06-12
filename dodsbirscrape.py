@@ -1,7 +1,9 @@
-from bs4 import BeautifulSoup
 import re
 import time
 import urllib
+
+from bs4 import BeautifulSoup
+import requests
 
 from dodsbirtopic import DODSBIRTopic
 
@@ -19,8 +21,8 @@ class DODSBIRScrape:
 
     def get_topic_list(self):
         """go to topic_list_url and extract list of topics"""
-        f = urllib.urlopen("%s" % self.topic_list_url)
-        soup = BeautifulSoup(f)
+        resp = requests.get(self.topic_list_url)
+        soup = BeautifulSoup(resp.text)
         self.topic_ids = {}
         options = soup.find_all('select')[0].find_all('option')
         for option in options:
@@ -75,8 +77,8 @@ class DODSBIRScrape:
         self.get_topic_list()
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
-        f = urllib.urlopen(URL_RESULTS_FORM, urllib.urlencode(data))
-        return self.html_to_topic(f, topic_id)
+        resp = requests.post(URL_RESULTS_FORM, data=data)
+        return self.html_to_topic(resp.text, topic_id)
 
     def get_all_topics(self):
         """loop through each topic id in topic_ids and scrape topic from 
