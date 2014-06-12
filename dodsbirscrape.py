@@ -6,10 +6,14 @@ import urllib
 
 from dodsbirtopic import DODSBIRTopic
 
+URL_RESULTS_FORM = "http://dodsbir.net/Topics/BasicTopicsResultsForm.asp"
+URL_TOPIC_LIST = "http://dodsbir.net/Topics/Default.asp"
+URL_TOPIC_BASE = "http://www.dodsbir.net/sitis/display_topic.asp?Bookmark"
 
 class DODSBIRScrape:
     """base class for DOD SBIR Importing"""
-    def __init__(self, topic_list_url="http://dodsbir.net/Topics/Default.asp"):
+    def __init__(self, 
+        topic_list_url=URL_TOPIC_LIST):
         self.topic_list_url = topic_list_url
         self.topic_ids = {}
         self.topics = []
@@ -39,14 +43,16 @@ class DODSBIRScrape:
         topic.title = meta_rows[3].findAll('td')[1].contents[0].string
         topic.areas = meta_rows[4].findAll('td')[1]\
             .contents[0].string.split(',')
-        topic.url = "http://www.dodsbir.net/sitis/display_topic.asp?Bookmark=%s" % topic_id
+        topic.url = "%s=%s" % (URL_TOPIC_BASE, topic_id)
         topic.acquisition_program = rows[0].findAll('td')[1].contents[0].string
 
         obj_header = soup.find(text=re.compile("Objective:"))
-        topic.objective = obj_header.parent.parent.parent.next_sibling.contents[0].string.strip()
+        topic.objective = obj_header.parent.parent.parent.next_sibling\
+            .contents[0].string.strip()
 
         desc_header = soup.find(text=re.compile("Description:"))
-        topic.description = desc_header.parent.parent.parent.next_sibling.contents[0].string.strip()
+        topic.description = desc_header.parent.parent.parent.next_sibling\
+            .contents[0].string.strip()
 
         topic.phases = [p.strip() for p in soup\
             .find_all(text=re.compile("^PHASE"))]
@@ -58,7 +64,9 @@ class DODSBIRScrape:
 
         kw_header = soup.find(text=re.compile("^Keywords:"))
         try:
-            topic.keywords = [keyword.strip() for keyword in kw_header.parent.parent.parent.next_sibling.contents[0].string.strip().rstrip('.').split(',')]
+            topic.keywords = [keyword.strip() for keyword in kw_header.parent\
+                .parent.parent.next_sibling.contents[0].string.strip()\
+                .rstrip('.').split(',')]
         except:
             topic.keywords = []
 
@@ -69,9 +77,7 @@ class DODSBIRScrape:
         self.get_topic_list()
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
-        req = mechanize.Request(
-            'http://dodsbir.net/Topics/BasicTopicsResultsForm.asp', 
-            urllib.urlencode(data))
+        req = mechanize.Request(URL_RESULTS_FORM, urllib.urlencode(data))
         resp = mechanize.urlopen(req)
         return self.html_to_topic(resp.read(), topic_id)
 
