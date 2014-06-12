@@ -31,3 +31,8 @@ topic = s.get_topic("SB142-004")
 print topic
 
 ```
+
+## Bugs and Limitations
+
+- The scraper doesn't retrieve questions and answers associated with topics.
+- The 'Proposals Accepted' date range isn't currently parsed and should be.
