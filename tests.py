@@ -1,8 +1,6 @@
 import unittest
 import urllib
 
-import validictory
-
 import dodsbirscrape
 
 
