@@ -1,4 +1,6 @@
+import json
 import re
+import sys
 import time
 
 from bs4 import BeautifulSoup
@@ -36,7 +38,7 @@ class DODSBIRScrape:
         rows = soup.findAll('table')[2].contents
 
         topic = DODSBIRTopic()
-        #topic.dates = soup.find(re.compile("Proposals Accepted"))
+        date_header = soup.find(re.compile("Proposals"))
         topic.program = meta_rows[1].findAll('td')[1].contents[0].string
         topic.topic_number = meta_rows[2].findAll('td')[1].contents[0].string
         topic.title = meta_rows[3].findAll('td')[1].contents[0].string
@@ -79,11 +81,31 @@ class DODSBIRScrape:
         resp = requests.post(URL_RESULTS_FORM, data=data)
         return self.html_to_topic(resp.text, topic_id)
 
-    def get_all_topics(self):
+    def get_all_topics(self, max=None):
         """loop through each topic id in topic_ids and scrape topic from 
         dodsbir.net"""
+        i = 0
+        tot = len(self.topic_ids)
         for key, value in self.topic_ids.iteritems():
+            i = i + 1
             self.topic_list = []
             topic = self.get_topic(key)
             self.topics.append(topic)
+            sys.stdout.write("Completed %d of %d \r" % (i, tot))
+            sys.stdout.flush()
+            if i == max:
+                break
             time.sleep(1)
+        return self.topics
+
+    def __json__(self):
+        """json representation of all topics scraped"""
+        j = "[%s]" % (",".join([json.dumps(t.__dict__) for t in self.topics]))
+        return j
+
+    def save_as_json(self, path="alltopics.json"):
+        """save json representation of all topics to filesystem"""
+        outfile = open(path, "w")
+        outfile.write(self.__json__())
+        outfile.close()
+        return self.__json__()
