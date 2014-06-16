@@ -11,10 +11,10 @@ class ServerTests(unittest.TestCase):
 	def testServerResponse(self):
 		self.assertTrue(urllib.urlopen(dodsbirscrape.URL_TOPIC_LIST))
 
-	def testTopicListRetrieved(self):
+	def testStageSolicitation(self):
 		s = dodsbirscrape.DODSBIRScrape()
 		self.assertFalse(s.topic_ids)
-		s.get_topic_list()
+		s.stage_current_solicitation()
 		self.assertTrue(s.topic_ids)
 
 	def testTopicRetrieved(self):

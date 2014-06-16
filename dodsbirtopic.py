@@ -5,7 +5,7 @@ class DODSBIRTopic:
 	def __init__(self):
 		pass
 
-	def as_json(self):
+	def __json__(self):
 		return json.dumps(self.__dict__)
 
 	def __str__(self):

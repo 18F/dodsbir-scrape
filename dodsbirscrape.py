@@ -16,14 +16,39 @@ class DODSBIRScrape:
     """base class for DOD SBIR Importing"""
     def __init__(self, 
         topic_list_url=URL_TOPIC_LIST):
+        self.solicitation = {}
         self.topic_list_url = topic_list_url
         self.topic_ids = {}
         self.topics = []
 
-    def get_topic_list(self):
-        """go to topic_list_url and extract list of topics"""
+    def get_solicitation(self, soup):
+        """extract solicitation information from page at topic_list_url"""
+        sol_header = soup.find(text=re.compile("Current Solicitation"))
+
+        s = {}
+        s["solicitation_id"] = sol_header.parent.parent.next_sibling\
+            .next_sibling.contents[1].string
+        s["pre_release_date"] = sol_header.parent.parent.next_sibling\
+            .next_sibling.contents[3].string
+        s["proposals_begin_date"] = sol_header.parent.parent.next_sibling\
+            .next_sibling.contents[5].string
+        s["proposals_end_date"] = sol_header.parent.parent.next_sibling\
+            .next_sibling.contents[7].contents[0].string
+        s["participating_components"] = sol_header.parent.parent.next_sibling\
+            .next_sibling.contents[9].string.split(',')
+        return s
+
+    def stage_current_solicitation(self):
+        """gets information for current solicitation and grabs list of topics
+        for the current solicitation"""
         resp = requests.get(self.topic_list_url)
         soup = BeautifulSoup(resp.text)
+        self.solicitation = self.get_solicitation(soup)
+        self.topic_ids = self.get_topic_list(soup)
+        return True
+
+    def get_topic_list(self, soup):
+        """go to topic_list_url and extract list of topics"""
         self.topic_ids = {}
         options = soup.find_all('select')[0].find_all('option')
         for option in options:
@@ -75,11 +100,14 @@ class DODSBIRScrape:
 
     def get_topic(self, topic_number):
         """given a topic number, fetch topic page from dodsbir.net"""
-        self.get_topic_list()
+        if not self.solicitation:
+            self.stage_current_solicitation()
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
         resp = requests.post(URL_RESULTS_FORM, data=data)
-        return self.html_to_topic(resp.text, topic_id)
+        topic = self.html_to_topic(resp.text, topic_id)
+        topic.solicitation = self.solicitation
+        return topic
 
     def get_all_topics(self, max=None):
         """loop through each topic id in topic_ids and scrape topic from 
