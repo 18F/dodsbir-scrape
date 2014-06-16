@@ -63,7 +63,6 @@ class DODSBIRScrape:
         rows = soup.findAll('table')[2].contents
 
         topic = DODSBIRTopic()
-        date_header = soup.find(re.compile("Proposals"))
         topic.program = meta_rows[1].findAll('td')[1].contents[0].string
         topic.topic_number = meta_rows[2].findAll('td')[1].contents[0].string
         topic.title = meta_rows[3].findAll('td')[1].contents[0].string
