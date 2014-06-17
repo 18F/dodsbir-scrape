@@ -1,16 +1,15 @@
-import json
-import re
-import sys
-import time
+from datetime import datetime
+import json, re, sys, time
 
 from bs4 import BeautifulSoup
 import requests
 
-from dodsbirtopic import DODSBIRTopic
+from dodsbirtopic import DODSBIRTopic, TopicEncoder
 
 URL_RESULTS_FORM = "http://dodsbir.net/Topics/BasicTopicsResultsForm.asp"
 URL_TOPIC_LIST = "http://dodsbir.net/Topics/Default.asp"
 URL_TOPIC_BASE = "http://www.dodsbir.net/sitis/display_topic.asp?Bookmark"
+
 
 class DODSBIRScrape:
     """base class for DOD SBIR Importing"""
@@ -28,12 +27,13 @@ class DODSBIRScrape:
         s = {}
         s["solicitation_id"] = sol_header.parent.parent.next_sibling\
             .next_sibling.contents[1].string
-        s["pre_release_date"] = sol_header.parent.parent.next_sibling\
-            .next_sibling.contents[3].string
-        s["proposals_begin_date"] = sol_header.parent.parent.next_sibling\
-            .next_sibling.contents[5].string
-        s["proposals_end_date"] = sol_header.parent.parent.next_sibling\
-            .next_sibling.contents[7].contents[0].string
+        s["pre_release_date"] = datetime.strptime(sol_header.parent.parent\
+            .next_sibling.next_sibling.contents[3].string, "%B %d, %Y")
+        s["proposals_begin_date"] = datetime.strptime(sol_header.parent.parent\
+            .next_sibling.next_sibling.contents[5].string, "%B %d, %Y")
+        s["proposals_end_date"] = datetime.strptime(sol_header.parent.parent\
+            .next_sibling.next_sibling.contents[7].contents[0].string,
+            "%B %d, %Y")
         s["participating_components"] = sol_header.parent.parent.next_sibling\
             .next_sibling.contents[9].string.split(',')
         return s
@@ -127,7 +127,7 @@ class DODSBIRScrape:
 
     def __json__(self):
         """json representation of all topics scraped"""
-        j = "[%s]" % (",".join([json.dumps(t.__dict__) for t in self.topics]))
+        j = "[%s]" % (",".join([json.dumps(t.__dict__, cls=TopicEncoder) for t in self.topics]))
         return j
 
     def save_as_json(self, path="alltopics.json"):
