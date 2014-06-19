@@ -105,7 +105,11 @@ class DODSBIRScrape:
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
         resp = requests.post(URL_RESULTS_FORM, data=data)
         topic = self.html_to_topic(resp.text, topic_id)
-        topic.solicitation = self.solicitation
+        topic.solicitation_id = self.solicitation['solicitation_id']
+        topic.pre_release_date = self.solicitation['pre_release_date']
+        topic.proposals_begin_date = self.solicitation['proposals_begin_date']
+        topic.proposals_end_date = self.solicitation['proposals_end_date']
+        topic.participating_components = self.solicitation['participating_components']
         return topic
 
     def get_all_topics(self, max=None):

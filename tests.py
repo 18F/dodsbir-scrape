@@ -34,9 +34,9 @@ class TopicTests(unittest.TestCase):
 
 	def testDatesConvertedToPythonObject(self):
 		self.topic = self.s.get_topic("SB142-004")
-		self.assertTrue(self.topic.solicitation["pre_release_date"].month)
-		self.assertTrue(self.topic.solicitation["proposals_begin_date"].month)
-		self.assertTrue(self.topic.solicitation["proposals_end_date"].month)
+		self.assertTrue(self.topic.pre_release_date.month)
+		self.assertTrue(self.topic.proposals_begin_date.month)
+		self.assertTrue(self.topic.proposals_end_date.month)
 
 def main():
     unittest.main()	

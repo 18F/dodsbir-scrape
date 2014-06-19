@@ -14,7 +14,7 @@ s.stage_current_solicitation()
 
 #see what was grabbed
 print s.topic_ids
-print s.solicitation
+print s.solicitation_id
 
 ```
 
@@ -30,7 +30,7 @@ topic = s.get_topic("SB142-004")
 
 #see what you grabbed
 print topic.title
-print topic.solicitation
+print topic.solicitation_id
 print topic.description
 
 ```
