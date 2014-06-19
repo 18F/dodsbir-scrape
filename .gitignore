@@ -1,3 +1,5 @@
 venv
 *.pyc
 alltopics.json
+dist
+dodsbirscrape.egg-info/
