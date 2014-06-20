@@ -1,5 +1,26 @@
 Python module for extracting DoD Small Business Innovation Research (SBIR) topics from http://dodsbir.net
 
+#### Extracted topic fields
+
+```
+program
+topic_number
+title
+areas
+url
+acquisition_program
+objective
+description
+phases
+references
+keywords
+solicitation_id
+pre_release_date
+proposals_begin_date
+proposals_end_date
+particpating_components
+```
+
 ## Examples
 
 #### Get list of topic numbers and solicitation information
