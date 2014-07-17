@@ -117,7 +117,7 @@ class DODSBIRScrape:
         dodsbir.net"""
         i = 0
         tot = len(self.topic_ids)
-        for key, value in self.topic_ids.iteritems():
+        for key, value in self.topic_ids.items():
             i = i + 1
             self.topic_list = []
             topic = self.get_topic(key)
