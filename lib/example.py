@@ -1,9 +1,9 @@
 import json
 
-from dodsbirscrape import DODSBIRScrape
+from dodsbir.scrape import Scrape
 
 #initialize
-i = DODSBIRScrape()
+i = Scrape()
 
 #stage solicitation
 i.stage_current_solicitation()

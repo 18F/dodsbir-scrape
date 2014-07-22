@@ -11,7 +11,7 @@ class TopicEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class DODSBIRTopic:
+class Topic:
 	"""base class for DOD SBIR Topics"""
 	def __init__(self):
 		pass

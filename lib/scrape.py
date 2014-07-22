@@ -4,18 +4,20 @@ import json, re, sys, time
 from bs4 import BeautifulSoup
 import requests
 
-from dodsbirtopic import DODSBIRTopic, TopicEncoder
+from dodsbir.topic import Topic, TopicEncoder
 
 URL_RESULTS_FORM = "http://dodsbir.net/Topics/BasicTopicsResultsForm.asp"
 URL_TOPIC_LIST = "http://dodsbir.net/Topics/Default.asp"
 URL_TOPIC_BASE = "http://www.dodsbir.net/sitis/display_topic.asp?Bookmark"
+URL_TOPIC_QUICK = "http://www.dodsbir.net/sitis/quick_scan.asp"
+URL_SOLICITATION_SCHED = "http://www.acq.osd.mil/osbp/sbir/sb/schedule.shtml"
 
 
-class DODSBIRScrape:
-    """base class for DOD SBIR Importing"""
-    def __init__(self, 
-        topic_list_url=URL_TOPIC_LIST):
+class Scrape:
+    """base class for DOD SBIR Scraping"""
+    def __init__(self, topic_list_url=URL_TOPIC_LIST):
         self.solicitation = {}
+        self.solicitation_schedule = [] # this will contain nested dicts
         self.topic_list_url = topic_list_url
         self.topic_ids = {}
         self.topics = []
@@ -25,6 +27,8 @@ class DODSBIRScrape:
         sol_header = soup.find(text=re.compile("Current Solicitation"))
 
         s = {}
+        # maybe change solicitation_id to pull from
+        # http://www.dodsbir.net/sitis/quick_scan.asp -- seems to be more accurate
         s["solicitation_id"] = sol_header.parent.parent.next_sibling\
             .next_sibling.contents[1].string
         s["pre_release_date"] = datetime.strptime(sol_header.parent.parent\
@@ -62,7 +66,7 @@ class DODSBIRScrape:
         meta_rows = soup.findAll('table')[1].contents
         rows = soup.findAll('table')[2].contents
 
-        topic = DODSBIRTopic()
+        topic = Topic()
         topic.program = meta_rows[1].findAll('td')[1].contents[0].string
         topic.topic_number = meta_rows[2].findAll('td')[1].contents[0].string
         topic.title = meta_rows[3].findAll('td')[1].contents[0].string

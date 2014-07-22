@@ -1,7 +1,7 @@
 import unittest
-import urllib
+from urllib import request
 
-import dodsbirscrape
+from scrape import Scrape, URL_TOPIC_LIST
 
 
 class ServerTests(unittest.TestCase):
@@ -9,10 +9,10 @@ class ServerTests(unittest.TestCase):
 	can be retrieved"""
 
 	def setUp(self):
-		self.s = dodsbirscrape.DODSBIRScrape()
+		self.s = Scrape()
 
 	def testServerResponse(self):
-		self.assertTrue(urllib.urlopen(dodsbirscrape.URL_TOPIC_LIST))
+		self.assertTrue(request.urlopen(URL_TOPIC_LIST))
 
 	def testStageSolicitation(self):
 		self.assertFalse(self.s.topic_ids)
@@ -25,7 +25,7 @@ class TopicTests(unittest.TestCase):
 	format"""
 
 	def setUp(self):
-		self.s = dodsbirscrape.DODSBIRScrape()
+		self.s = Scrape()
 
 	def testTopicRetrieved(self):
 		self.assertFalse(hasattr(self, "topic"))

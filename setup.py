@@ -6,7 +6,11 @@ setup(name="dodsbirscrape",
 	url='http://github.com/jroo/dodsbir-scrape',
 	author='18F.gsa.gov',
 	zip_safe=False,
-	install_requires = ['beautifulsoup4>=4.3.2',
+	install_requires = [
+        'beautifulsoup4>=4.3.2',
 		'requests==2.3.0'
-	]
+	],
+    packages=['dodsbir'],
+    package_dir={'dodsbir': 'lib'},
+    classifiers=['Development Status :: 2 - Pre-Alpha']
 )
