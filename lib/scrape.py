@@ -39,7 +39,8 @@ class Scraper:
         s["pre_release_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[3].string)
         s["proposals_begin_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[5].string)
         s["proposals_end_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[7].contents[0].string)
-        s["participating_components"] = sol_header.parent.parent.next_sibling.next_sibling.contents[9].string.split(',')
+        agencies = sol_header.parent.parent.next_sibling.next_sibling.contents[9].string.split(',')
+        s["participating_components"] = [ x.strip() for x in agencies ]
         return s
 
     def stage_current_solicitation(self):
