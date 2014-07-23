@@ -1,7 +1,7 @@
 from setuptools import setup
 
-setup(name="dodsbirscrape",
-	version='0.8',
+setup(name="dodsbir",
+	version='0.9',
 	description='Scraping library for DODSBIR.net',
 	url='http://github.com/jroo/dodsbir-scrape',
 	author='18F.gsa.gov',
