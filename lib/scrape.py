@@ -46,6 +46,7 @@ class Scraper:
         """gets information for current solicitation and grabs list of topics
         for the current solicitation"""
         resp = requests.get(self.topic_list_url)
+        resp.connection.close()  # fixes warning in Python 3.4 about unclosed socket
         soup = BeautifulSoup(resp.text)
         self.solicitation = self.get_solicitation(soup)
         self.topic_ids = self.get_topic_list(soup)
@@ -108,6 +109,7 @@ class Scraper:
         topic_id = self.topic_ids[topic_number]
         data = {"selTopic":topic_id, "WhereFrom":"basicTopicNo"}
         resp = requests.post(URL_RESULTS_FORM, data=data)
+        resp.connection.close()  # fixes py3 warning
         topic = self.html_to_topic(resp.text, topic_id)
         topic.solicitation_id = self.solicitation['solicitation_id']
         topic.pre_release_date = self.solicitation['pre_release_date']
