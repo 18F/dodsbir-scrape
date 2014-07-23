@@ -72,8 +72,8 @@ class Scraper:
         topic.program = meta_rows[1].findAll('td')[1].contents[0].string
         topic.topic_number = meta_rows[2].findAll('td')[1].contents[0].string
         topic.title = meta_rows[3].findAll('td')[1].contents[0].string
-        topic.areas = meta_rows[4].findAll('td')[1]\
-            .contents[0].string.split(',')
+        topic.areas = [ x.strip() for x in meta_rows[4].findAll('td')[1]\
+            .contents[0].string.split(',') ]
         topic.url = "%s=%s" % (URL_TOPIC_BASE, topic_id)
         topic.acquisition_program = rows[0].findAll('td')[1].contents[0].string
 
