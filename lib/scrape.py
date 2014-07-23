@@ -142,9 +142,9 @@ class Scraper:
 
     def save_as_json(self, path="alltopics.json"):
         """save json representation of all topics to filesystem"""
-        outfile = open(path, "w")
-        outfile.write(self.__json__())
-        outfile.close()
+        with open(path, "w") as outfile:
+            outfile.write(self.__json__())
+
         return self.__json__()
 
     def _parse_date(self, string):
