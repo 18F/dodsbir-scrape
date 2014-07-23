@@ -29,18 +29,19 @@ class TopicTests(unittest.TestCase):
 
 	def testTopicRetrieved(self):
 		self.assertFalse(hasattr(self, "topic"))
-		self.topic = self.s.get_topic("SB142-004")
-		self.assertTrue(self.topic)
+		topic = self.s.get_topic("SB142-004")
+		self.assertTrue(topic)
 
 	def testTopicSolicitationID(self):
-		self.topic = self.s.get_topic("SB142-004")
-		self.assertEqual(self.topic.solicitation_id, "DoD SBIR 2014.2")
+		topic = self.s.get_topic("SB142-004")
+		self.assertEqual(topic.solicitation_id, "DoD SBIR 2014.2")
 
 	def testDatesConvertedToPythonObject(self):
-		self.topic = self.s.get_topic("SB142-004")
-		self.assertTrue(self.topic.pre_release_date.month)
-		self.assertTrue(self.topic.proposals_begin_date.month)
-		self.assertTrue(self.topic.proposals_end_date.month)
+		topic = self.s.get_topic("SB142-004")
+		self.assertTrue(topic.pre_release_date.month)
+		self.assertTrue(topic.proposals_begin_date.month)
+		self.assertTrue(topic.proposals_end_date.month)
+
 
 def main():
     unittest.main()	
