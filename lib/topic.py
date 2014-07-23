@@ -6,7 +6,7 @@ class TopicEncoder(json.JSONEncoder):
 
     def default(self, obj):
         if isinstance(obj, datetime):
-            return int(mktime(obj.timetuple()))
+            return obj.isoformat()
 
         return json.JSONEncoder.default(self, obj)
 

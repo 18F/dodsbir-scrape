@@ -32,6 +32,10 @@ class TopicTests(unittest.TestCase):
 		self.topic = self.s.get_topic("SB142-004")
 		self.assertTrue(self.topic)
 
+	def testTopicSolicitationID(self):
+		self.topic = self.s.get_topic("SB142-004")
+		self.assertEqual(self.topic.solicitation_id, "DoD SBIR 2014.2")
+
 	def testDatesConvertedToPythonObject(self):
 		self.topic = self.s.get_topic("SB142-004")
 		self.assertTrue(self.topic.pre_release_date.month)

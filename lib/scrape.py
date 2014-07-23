@@ -29,17 +29,17 @@ class Scraper:
         s = {}
         # maybe change solicitation_id to pull from
         # http://www.dodsbir.net/sitis/quick_scan.asp -- seems to be more accurate
-        s["solicitation_id"] = sol_header.parent.parent.next_sibling\
+        sol_id_raw = sol_header.parent.parent.next_sibling\
             .next_sibling.contents[1].string
-        s["pre_release_date"] = datetime.strptime(sol_header.parent.parent\
-            .next_sibling.next_sibling.contents[3].string, "%B %d, %Y")
-        s["proposals_begin_date"] = datetime.strptime(sol_header.parent.parent\
-            .next_sibling.next_sibling.contents[5].string, "%B %d, %Y")
-        s["proposals_end_date"] = datetime.strptime(sol_header.parent.parent\
-            .next_sibling.next_sibling.contents[7].contents[0].string,
-            "%B %d, %Y")
-        s["participating_components"] = sol_header.parent.parent.next_sibling\
-            .next_sibling.contents[9].string.split(',')
+        try:
+            s["solicitation_id"] = re.search(r'\d{4}\.[1-2A-B]', sol_id_raw).group()
+        except Exception as e:
+            s["solicitation_id"] = sol_id_raw
+
+        s["pre_release_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[3].string)
+        s["proposals_begin_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[5].string)
+        s["proposals_end_date"] = self._parse_date(sol_header.parent.parent.next_sibling.next_sibling.contents[7].contents[0].string)
+        s["participating_components"] = sol_header.parent.parent.next_sibling.next_sibling.contents[9].string.split(',')
         return s
 
     def stage_current_solicitation(self):
@@ -111,7 +111,7 @@ class Scraper:
         resp = requests.post(URL_RESULTS_FORM, data=data)
         resp.connection.close()  # fixes py3 warning
         topic = self.html_to_topic(resp.text, topic_id)
-        topic.solicitation_id = self.solicitation['solicitation_id']
+        topic.solicitation_id = "DoD {} {}".format(topic.program, self.solicitation['solicitation_id'])
         topic.pre_release_date = self.solicitation['pre_release_date']
         topic.proposals_begin_date = self.solicitation['proposals_begin_date']
         topic.proposals_end_date = self.solicitation['proposals_end_date']
@@ -146,3 +146,6 @@ class Scraper:
         outfile.write(self.__json__())
         outfile.close()
         return self.__json__()
+
+    def _parse_date(self, string):
+        return datetime.strptime(string, "%B %d, %Y")
