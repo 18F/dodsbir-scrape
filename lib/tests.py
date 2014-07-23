@@ -1,7 +1,7 @@
 import unittest
 from urllib import request
 
-from scrape import Scrape, URL_TOPIC_LIST
+from scrape import Scraper, URL_TOPIC_LIST
 
 
 class ServerTests(unittest.TestCase):
@@ -9,7 +9,7 @@ class ServerTests(unittest.TestCase):
 	can be retrieved"""
 
 	def setUp(self):
-		self.s = Scrape()
+		self.s = Scraper()
 
 	def testServerResponse(self):
 		self.assertTrue(request.urlopen(URL_TOPIC_LIST))
@@ -25,7 +25,7 @@ class TopicTests(unittest.TestCase):
 	format"""
 
 	def setUp(self):
-		self.s = Scrape()
+		self.s = Scraper()
 
 	def testTopicRetrieved(self):
 		self.assertFalse(hasattr(self, "topic"))

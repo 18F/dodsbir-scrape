@@ -13,7 +13,7 @@ URL_TOPIC_QUICK = "http://www.dodsbir.net/sitis/quick_scan.asp"
 URL_SOLICITATION_SCHED = "http://www.acq.osd.mil/osbp/sbir/sb/schedule.shtml"
 
 
-class Scrape:
+class Scraper:
     """base class for DOD SBIR Scraping"""
     def __init__(self, topic_list_url=URL_TOPIC_LIST):
         self.solicitation = {}
