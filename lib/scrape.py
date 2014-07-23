@@ -23,7 +23,7 @@ class Scraper:
         self.topics = []
 
     def get_solicitation(self, soup):
-        """extract solicitation information from page at topic_list_url"""
+        """extract solicitation information from page at URL_TOPIC_LIST"""
         sol_header = soup.find(text=re.compile("Current Solicitation"))
 
         s = {}
