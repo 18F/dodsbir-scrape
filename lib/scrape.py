@@ -75,7 +75,13 @@ class Scraper:
         topic.areas = [ x.strip() for x in meta_rows[4].findAll('td')[1]\
             .contents[0].string.split(',') ]
         topic.url = "%s=%s" % (URL_TOPIC_BASE, topic_id)
-        topic.acquisition_program = rows[0].findAll('td')[1].contents[0].string
+
+        acq_header = soup.find(text=re.compile("Acquisition Program:"))
+        if acq_header is not None:
+            acq_field = acq_header.parent.parent.parent.next_sibling\
+                .contents[0].string
+            if acq_field is not None:
+                topic.acquisition_program = acq_field.strip()
 
         obj_header = soup.find(text=re.compile("Objective:"))
         topic.objective = obj_header.parent.parent.parent.next_sibling\
