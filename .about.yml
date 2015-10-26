@@ -1,0 +1,55 @@
+---
+# .about.yml project metadata
+#
+# Short name that acts as the project identifier (required)
+name: dodsbir-scrape
+
+# Full proper name of the project (required)
+full_name: DODSBIR Scraper
+
+# The type of content in the repo
+# values: app, docs, policy
+type: app
+
+# Describes whether a project team, working group/guild, etc. owns the repo (required)
+# values: guild, working-group, project
+owner_type: project
+
+# Name of the main project repo if this is a sub-repo; name of the working group/guild repo if this is a working group/guild subproject
+parent: fbopen
+
+# Maturity stage of the project (required)
+# values: discovery, alpha, beta, live, sunset, transfer, end
+stage: end
+status: deprecated
+
+# Description of the project
+description: A scraper for the SBIR topics housed on dodsbir.net
+
+# Tags that describe the project or aspects of the project
+tags: [sbir,procurement,grants,contracts,small-business,innovation,dod]
+
+# Should be 'true' if the project has a continuous build (required)
+# values: true, false
+testable: true
+
+# Team members contributing to the project (required)
+# Items:
+# - github: GitHub user name
+#   id: Internal team identifier/user name
+#   role: Team member's role; leads should be designated as 'lead'
+team:
+- github: arowla
+  id: alison
+  role: lead
+- github: jroo
+  id: josh
+  role: dev
+- github: DavidEBest
+  id: david
+  role: dev
+
+licenses:
+  dodsbir-scrape:
+    id: CC0
+    url: https://github.com/18F/dodsbir-scrape/blob/master/LICENSE.md
